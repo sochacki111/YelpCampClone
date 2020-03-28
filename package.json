@@ -21,6 +21,7 @@
   },
   "homepage": "https://github.com/sochacki111/YelpCampClone#readme",
   "dependencies": {
+    "body-parser": "^1.19.0",
     "ejs": "^3.0.1",
     "express": "^4.17.1"
   }

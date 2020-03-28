@@ -1,8 +1,9 @@
 const express = require('express');
+const bodyParser = require('body-parser');
 const app = express();
 const port = 3000;
 
-const campgrounds = [
+let campgrounds = [
     {
         name: 'Salmon Creek',
         image:
@@ -20,6 +21,8 @@ const campgrounds = [
     }
 ];
 
+app.use(bodyParser.urlencoded({ extended: true }));
+
 app.set('view engine', 'ejs');
 
 app.get('/', (req, res) => {
@@ -27,7 +30,23 @@ app.get('/', (req, res) => {
 });
 
 app.get('/campgrounds', (req, res) => {
-    res.render('campgrounds', {campgrounds: campgrounds});
+    res.render('campgrounds', { campgrounds: campgrounds });
+});
+
+app.post('/campgrounds', (req, res) => {
+    // Get data from form and add to campgrounds array
+    let campgroundName = req.body.name;
+    let campgroundImage = req.body.image;
+    let newCampground = { name: campgroundName, image: campgroundImage };
+
+    // Insert new campground
+    campgrounds.push(newCampground);
+    // Redirect back to campgrounds page
+    res.redirect('/campgrounds');
+});
+
+app.get('/campgrounds/new', (req, res) => {
+    res.render('new');
 });
 
 app.listen(port, () => {
