@@ -25,16 +25,27 @@ app.get('/', (req, res) => {
     res.render('landing');
 });
 
+/**
+ * RESTFUL ROUTES
+ */
+
+// NEW - display form to make a new campground
+app.get('/campgrounds/new', (req, res) => {
+    res.render('new');
+});
+
+// INDEX - Show a list of Campgrounds
 app.get('/campgrounds', (req, res) => {
     Campground.find({}, (err, campgrounds) => {
         if (err) {
             console.log('Something went wrong!');
         } else {
-            res.render('campgrounds', { campgrounds: campgrounds });
+            res.render('index-campgrounds', { campgrounds: campgrounds });
         }
     });
 });
 
+// CREATE - Add new Campground to DB
 app.post('/campgrounds', (req, res) => {
     // Get data from form and add to campgrounds array
     let campgroundName = req.body.name;
@@ -55,13 +66,21 @@ app.post('/campgrounds', (req, res) => {
             }
         }
     );
-    // campgrounds.push(newCampground);
     // Redirect back to campgrounds page
     res.redirect('/campgrounds');
 });
 
-app.get('/campgrounds/new', (req, res) => {
-    res.render('new');
+// SHOW - Show info about one Campground
+app.get('/campgrounds/:id', (req, res) => {
+    let campgroundId = req.params.id;
+    console.log(campgroundId);
+    Campground.findById(campgroundId, (err, campground) => {
+        if(err) {
+            console.log(err);
+        } else {
+            res.render('show-campground', {campground: campground});
+        }
+    });
 });
 
 app.listen(port, () => {
