@@ -1,8 +1,7 @@
 <%- include('partials/header') %>
 
-<h1>Look at that awesome Campground!</h1>
-
-<%= campground.name %>
+<h1><%= campground.name %></h1>
 <img src="<%= campground.image %>" alt="Campground Image" />
+<p><%= campground.description %></p>
 
 <%- include('partials/footer') %>

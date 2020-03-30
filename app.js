@@ -12,6 +12,7 @@ mongoose.connect('mongodb://localhost:27017/yelp_camp', {
 // SCHEMA SETUP
 const campgroundSchema = new mongoose.Schema({
     name: String,
+    description: String,
     image: String
 });
 
@@ -49,13 +50,14 @@ app.get('/campgrounds', (req, res) => {
 app.post('/campgrounds', (req, res) => {
     // Get data from form and add to campgrounds array
     let campgroundName = req.body.name;
+    let campgroundDescription = req.body.description;
     let campgroundImage = req.body.image;
-    let newCampground = { name: campgroundName, image: campgroundImage };
 
     // Create new Campground and save to Database
     Campground.create(
         {
             name: campgroundName,
+            description: campgroundDescription,
             image: campgroundImage
         },
         (err, campground) => {
