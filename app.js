@@ -9,14 +9,7 @@ mongoose.connect('mongodb://localhost:27017/yelp_camp', {
     useUnifiedTopology: true
 });
 
-// SCHEMA SETUP
-const campgroundSchema = new mongoose.Schema({
-    name: String,
-    description: String,
-    image: String
-});
-
-const Campground = mongoose.model('Campground', campgroundSchema);
+Campground = require('./models/campground');
 
 app.use(bodyParser.urlencoded({ extended: true }));
 
