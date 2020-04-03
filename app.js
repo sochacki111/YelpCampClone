@@ -1,9 +1,12 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
+const passport = require('passport');
+const LocalStrategy = require('passport-local');
 const path = require('path');
-Campground = require('./models/campground');
-Comment = require('./models/comment');
+const Campground = require('./models/campground');
+const Comment = require('./models/comment');
+const User = require('./models/user');
 seedDB = require('./seeds');
 const app = express();
 const port = 3000;
@@ -18,13 +21,35 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.set('view engine', 'ejs');
 seedDB();
 
+/**
+ * PASSPORT CONFIGURATION
+ */
+// Setup express session
+app.use(
+    require('express-session')({
+        secret: 'This is very classified!',
+        resave: false,
+        saveUninitialized: false
+    })
+);
+
+app.use(passport.initialize());
+app.use(passport.session());
+
+// Use static authenticate method of model in LocalStrategy
+// It comes from passportLocalMongoose
+passport.use(new LocalStrategy(User.authenticate()));
+
+// Use static serialize and deserialize of model for passport session support
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
+
+/**
+ * CAMPGROUND ROUTES
+ */
 app.get('/', (req, res) => {
     res.render('landing');
 });
-
-/**
- * RESTFUL ROUTES
- */
 
 // NEW - display form to make a new campground
 app.get('/campgrounds/new', (req, res) => {
@@ -72,20 +97,23 @@ app.post('/campgrounds', (req, res) => {
 app.get('/campgrounds/:id', (req, res) => {
     let campgroundId = req.params.id;
     console.log(campgroundId);
-    Campground.findById(campgroundId).populate('comments').exec((err, campground) => {
-        res.render('campgrounds/show', {campground: campground });
-    });
+    Campground.findById(campgroundId)
+        .populate('comments')
+        .exec((err, campground) => {
+            res.render('campgrounds/show', { campground: campground });
+        });
 });
 
-// COMMENTS ROUTES
-
+/**
+ * COMMENT ROUTES
+ */
 app.get('/campgrounds/:id/comments/new', (req, res) => {
     // Find campground by id
     Campground.findById(req.params.id, (err, campground) => {
         if (err) {
             console.log(err);
         } else {
-            res.render('comments/new', {campground: campground});
+            res.render('comments/new', { campground: campground });
         }
     });
 });
@@ -104,9 +132,33 @@ app.post('/campgrounds/:id/comments', (req, res) => {
                     campground.comments.push(comment);
                     campground.save();
                     res.redirect(`/campgrounds/${campground._id}`);
-                } 
+                }
             });
         }
+    });
+});
+
+/**
+ * AUTH ROUTES
+ */
+
+// Show Register form
+app.get('/register', (req, res) => {
+    res.render('register');
+});
+
+app.post('/register', (req, res) => {
+    let password = req.body.password;
+    let newUser = new User({ username: req.body.username });
+    User.register(newUser, password, (err, user) => {
+        if (err) {
+            console.log(err);
+            return res.render('register');
+        }
+        // Log User in
+        passport.authenticate('local')(req, res, () => {
+            res.redirect('/campgrounds');
+        });
     });
 });
 
