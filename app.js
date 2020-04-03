@@ -6,7 +6,7 @@ seedDB = require('./seeds');
 const app = express();
 const port = 3000;
 
-seedDB();
+// seedDB();
 mongoose.connect('mongodb://localhost:27017/yelp_camp', {
     useNewUrlParser: true,
     useUnifiedTopology: true
@@ -71,12 +71,8 @@ app.post('/campgrounds', (req, res) => {
 app.get('/campgrounds/:id', (req, res) => {
     let campgroundId = req.params.id;
     console.log(campgroundId);
-    Campground.findById(campgroundId, (err, campground) => {
-        if(err) {
-            console.log(err);
-        } else {
-            res.render('show-campground', {campground: campground});
-        }
+    Campground.findById(campgroundId).populate('comments').exec((err, campground) => {
+        res.render('show-campground', {campground: campground });
     });
 });
 

@@ -38,7 +38,12 @@ async function seedDB() {
                 author: 'Homer'
             });
             console.log('Comment created');
-            campground.comments.push(comment);
+            let comment2 = await Comment.create({
+                text: 'I looooove this place!',
+                author: 'michas111'
+            })
+            console.log('Comment2 created');
+            campground.comments.push(comment, comment2);
             campground.save();
             console.log('Comment added to campground');
         }
