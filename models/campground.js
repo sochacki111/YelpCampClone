@@ -4,7 +4,13 @@ const mongoose = require('mongoose');
 const campgroundSchema = new mongoose.Schema({
     name: String,
     description: String,
-    image: String
+    image: String,
+    comments: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Comment'
+        }
+    ]
 });
 const Campground = mongoose.model('Campground', campgroundSchema);
 

@@ -1,15 +1,17 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
+Campground = require('./models/campground');
+seedDB = require('./seeds');
 const app = express();
 const port = 3000;
 
+seedDB();
 mongoose.connect('mongodb://localhost:27017/yelp_camp', {
     useNewUrlParser: true,
     useUnifiedTopology: true
 });
 
-Campground = require('./models/campground');
 
 app.use(bodyParser.urlencoded({ extended: true }));
 
