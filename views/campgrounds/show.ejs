@@ -1,11 +1,12 @@
-<%- include('partials/header') %>
+<%- include('../partials/header') %>
 
 <h1><%= campground.name %></h1>
 <img src="<%= campground.image %>" alt="Campground Image" />
 <p><%= campground.description %></p>
+<p><a class="btn btn-success" href="/campgrounds/<%= campground._id %>/comments/new">Add new Campground</a></p>
 
 <% campground.comments.forEach((comment) => { %>
     <p><%= comment.text %> ~ <i><%= comment.author %> </i></p>    
 <% }) %> 
 
-<%- include('partials/footer') %>
+<%- include('../partials/footer') %>
