@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const Campground = require('../models/campground');
+const Comment = require('../models/comment');
 
 // INDEX - Show a list of Campgrounds
 router.get('/', (req, res) => {
@@ -52,6 +53,50 @@ router.get('/:id', (req, res) => {
         .exec((err, campground) => {
             res.render('campgrounds/show', { campground: campground });
         });
+});
+
+// EDIT - Show edit form for one Campground
+router.get('/:id/edit', (req, res) => {
+    Campground.findById(req.params.id, (err, campground) => {
+        if (err) {
+            console.log(err);
+        } else {
+            res.render('campgrounds/edit', { campground: campground });
+        }
+    });
+});
+
+router.put('/:id', (req, res) => {
+    Campground.findByIdAndUpdate(
+        req.params.id,
+        req.body.campground,
+        (err, updatedCampground) => {
+            if (err) {
+                res.redirect('/campgrounds');
+            } else {
+                res.redirect(`/campgrounds/${req.params.id}`);
+            }
+        }
+    );
+});
+
+router.delete('/:id', (req, res, next) => {
+    Campground.findById(req.params.id, (err, campground) => {
+        Comment.remove(
+            {
+                _id: {
+                    $in: campground.comments
+                }
+            },
+            err => {
+                if (err) {
+                    return next(err);
+                }
+                campground.remove();
+                res.redirect('/campgrounds');
+            }
+        );
+    });
 });
 
 // Middleware
