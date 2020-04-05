@@ -34,6 +34,7 @@
                             href="/campgrounds/<%= campground._id %>/comments/new"
                             >Add new Comment</a
                         >
+                        <% if (currentUser && campground.author.id.equals(currentUser._id)) { %>
                         <a
                             class="btn btn-warning"
                             href="/campgrounds/<%= campground._id %>/edit"
@@ -45,6 +46,7 @@
                             method="POST"
                             ><button class="btn btn-danger">Delete Campground</button></form
                         >
+                        <% } %> 
                     </p>
                 </div>
                 <hr />
