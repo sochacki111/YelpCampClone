@@ -40,7 +40,8 @@
                                 href="/campgrounds/<%= campground._id %>/edit"
                                 >Edit Campground</a
                             >
-                            <form id="delete-form"                               
+                            <form 
+                                class="delete-form"                               
                                 action="/campgrounds/<%= campground._id %>?_method=DELETE"
                                 method="POST"
                                 ><button class="btn btn-danger btn-sm">Delete Campground</button></form
@@ -60,8 +61,9 @@
                                 href="/campgrounds/<%= campground._id %>/comments/<%= comment._id %>/edit"
                                 >Edit Comment</a
                             >
-                            <form id="delete-form"                               
-                                action="/campgrounds/<%= campground._id %>/comments/<%= comment._ids %>?_method=DELETE"
+                            <form                              
+                                class="delete-form"
+                                action="/campgrounds/<%= campground._id %>/comments/<%= comment._id %>?_method=DELETE"
                                 method="POST"
                                 ><button class="btn btn-danger btn-sm">Delete Comment</button></form
                             >
