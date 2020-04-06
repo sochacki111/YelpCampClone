@@ -4,6 +4,7 @@ const mongoose = require('mongoose');
 const passport = require('passport');
 const LocalStrategy = require('passport-local');
 const methodOverride = require('method-override');
+const flash = require('connect-flash');
 const path = require('path');
 const Campground = require('./models/campground');
 const Comment = require('./models/comment');
@@ -25,6 +26,7 @@ mongoose.connect('mongodb://localhost:27017/yelp_camp', {
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(methodOverride('_method'));
+app.use(flash());
 app.set('view engine', 'ejs');
 // seed the database
 // seedDB();
@@ -55,6 +57,8 @@ passport.deserializeUser(User.deserializeUser());
 // This wil be added to every single template and route
 app.use((req, res, next) => {
     res.locals.currentUser = req.user;
+    res.locals.error = req.flash('error');
+    res.locals.success = req.flash('success');
     next();
 });
 
