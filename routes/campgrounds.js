@@ -116,7 +116,7 @@ function checkCampgroundOwnership(req, res, next) {
             }
         });
     } else {
-        // if not, redirect
+        // If not, redirect
         res.redirect('back');
     }
 }
