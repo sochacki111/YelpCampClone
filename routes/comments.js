@@ -24,6 +24,7 @@ router.post('/', middleware.isLoggedIn, (req, res) => {
         } else {
             Comment.create(comment, (err, comment) => {
                 if (err) {
+                    req.flash('error', 'Something went wrong');
                     console.log(err);
                 } else {
                     // Add username and id to comment
@@ -33,6 +34,7 @@ router.post('/', middleware.isLoggedIn, (req, res) => {
                     comment.save();
                     campground.comments.push(comment);
                     campground.save();
+                    req.flash('success', 'Successfully added comment');
                     res.redirect(`/campgrounds/${campground._id}`);
                 }
             });
@@ -42,15 +44,21 @@ router.post('/', middleware.isLoggedIn, (req, res) => {
 
 // Comment edit form
 router.get('/:comment_id/edit', middleware.checkCommentOwnership, (req, res) => {
-    Comment.findById(req.params.comment_id, (err, comment) => {
-        if (err) {
-            res.redirect('back');
-        } else {
-            res.render('comments/edit', {
-                campground_id: req.params.id,
-                comment: comment
-            });
+    Campground.findById(req.params.id, (err, foundCampgound) => {
+        if (err || !foundCampgound) {
+            req.flash('error', 'Campground not found');
+            return res.redirect('back');
         }
+        Comment.findById(req.params.comment_id, (err, comment) => {
+            if (err) {
+                res.redirect('back');
+            } else {
+                res.render('comments/edit', {
+                    campground_id: req.params.id,
+                    comment: comment
+                });
+            }
+        });
     });
 });
 
@@ -75,6 +83,7 @@ router.delete('/:comment_id', middleware.checkCommentOwnership, (req, res) => {
         if (err) {
             res.redirect('back');
         } else {
+            req.flash('success', 'Comment deleted');
             res.redirect(`/campgrounds/${req.params.id}`);
         }
     });

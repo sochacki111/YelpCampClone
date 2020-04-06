@@ -50,8 +50,13 @@ router.get('/new', middleware.isLoggedIn, (req, res) => {
 router.get('/:id', (req, res) => {
     Campground.findById(req.params.id)
         .populate('comments')
-        .exec((err, campground) => {
-            res.render('campgrounds/show', { campground: campground });
+        .exec((err, foundCampground) => {
+            if (err || !foundCampground) {
+                req.flash('error', 'Campground not found');
+                res.redirect('back');
+            } else {
+                res.render('campgrounds/show', { campground: foundCampground });
+            }
         });
 });
 
