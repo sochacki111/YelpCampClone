@@ -18,7 +18,7 @@ const commentRoutes = require('./routes/comments'),
     campgroundRoutes = require('./routes/campgrounds'),
     indexRoutes = require('./routes/index');
 
-mongoose.connect('mongodb://localhost:27017/yelp_camp', {
+mongoose.connect('mongodb://localhost:27017/yelp_camp_dynamic_price', {
     useNewUrlParser: true,
     useUnifiedTopology: true
 });
