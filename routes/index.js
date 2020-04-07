@@ -48,7 +48,7 @@ router.post(
 // Logout route
 router.get('/logout', (req, res) => {
     req.logout();
-    req.flash('success', 'You need to be logged in to do that');
+    req.flash('success', 'Succesfully logged out');
     res.redirect('/campgrounds');
 });
 

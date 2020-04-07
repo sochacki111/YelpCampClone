@@ -25,17 +25,19 @@
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav">
+                <ul class="navbar-nav ml-auto">
                     <% if(!currentUser) { %>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/login">Log in</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/register">Sign up</a>
-                    </li>
-                    <% } else { %>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">Signed in as: <%= currentUser.username %></a>
+                            <a class="nav-link" href="/register">Sign up</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/login">Log in</a>
+                        </li>
+                        <% } else { %>
+                        <li class="nav-item">
+                            <a class="nav-link active" href="#"
+                                >Signed in as: <%= currentUser.username %></a
+                            >
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="/logout">Log out</a>
@@ -45,15 +47,15 @@
             </div>
         </nav>
 
-    <div class="container">
-        <% if (error && error.length > 0) { %>
-            <div class="alert alert-danger" role="alert">
-                <%= error %>
-            </div>
-        <% } %>
-        <% if (success && success.length > 0) { %>
-            <div class="alert alert-success" role="alert">
-                <%= success %>
-            </div>
-        <% } %>
-    </div>
+        <div class="container">
+            <% if (error && error.length > 0) { %>
+                <div class="alert alert-danger" role="alert">
+                    <%= error %>
+                </div>
+            <% } %> 
+            <% if (success && success.length > 0) { %>
+                <div class="alert alert-success" role="alert">
+                    <%= success %>
+                </div>
+            <% } %>
+        </div>
