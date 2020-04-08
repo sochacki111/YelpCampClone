@@ -11,7 +11,7 @@ const Comment = require('./models/comment');
 const User = require('./models/user');
 const seedDB = require('./seeds');
 const app = express();
-const port = 3000;
+const PORT = process.env.PORT || 5000;
 
 // Requiring routes
 const commentRoutes = require('./routes/comments'),
@@ -70,6 +70,6 @@ app.use('/', indexRoutes);
 app.use('/campgrounds', campgroundRoutes);
 app.use('/campgrounds/:id/comments', commentRoutes);
 
-app.listen(port, () => {
+app.listen(PORT, () => {
     console.log('YelpCamp Server has started!');
 });
