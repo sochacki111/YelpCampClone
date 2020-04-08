@@ -39,12 +39,13 @@ router.get('/login', (req, res) => {
 router.post(
     '/login',
     passport.authenticate('local', {
-        successRedirect: '/campgrounds',
         failureRedirect: '/login',
-        successFlash: 'Welcome back!',
-        failureFlash: 'Invalid username and/or password'
+        failureFlash: true,
     }),
-    (req, res) => {}
+    (req, res) => {
+        req.flash('success', `Welcome back ${req.body.username}!`);
+        res.redirect('/campgrounds');
+    }
 );
 
 // Logout route
