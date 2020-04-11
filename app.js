@@ -11,7 +11,7 @@ const Comment = require('./models/comment');
 const User = require('./models/user');
 const seedDB = require('./seeds');
 const app = express();
-const PORT = process.env.PORT || 5000;
+require('dotenv').config();
 
 // Requiring routes
 const commentRoutes = require('./routes/comments'),
@@ -70,6 +70,6 @@ app.use('/', indexRoutes);
 app.use('/campgrounds', campgroundRoutes);
 app.use('/campgrounds/:id/comments', commentRoutes);
 
-app.listen(PORT, () => {
-    console.log(`YelpCamp Server has started on port ${PORT}!`);
+app.listen(process.env.PORT, () => {
+    console.log(`YelpCamp Server has started on port ${process.env.PORT}!`);
 });
